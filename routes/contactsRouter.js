@@ -8,7 +8,10 @@ import {
 	updateStatus,
 } from "../controllers/contactsControllers.js";
 
-import { updateContactSchema } from "../schemas/contactsSchemas.js";
+import {
+	updateContactSchema,
+	updateStatusContactShema,
+} from "../schemas/contactsSchemas.js";
 import validateBody from "../helpers/validateBody.js";
 
 import isValidId from "../middlewares/isValidId.js";
@@ -30,6 +33,11 @@ contactsRouter.put(
 	updateContact
 );
 
-contactsRouter.patch("/:id/favorite", isValidId, updateStatus);
+contactsRouter.patch(
+	"/:id/favorite",
+	validateBody(updateStatusContactShema),
+	isValidId,
+	updateStatus
+);
 
 export default contactsRouter;

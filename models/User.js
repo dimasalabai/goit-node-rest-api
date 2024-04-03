@@ -6,10 +6,6 @@ import { emailRegepxp } from "../constants/user-constants.js";
 
 const userSchema = new Schema(
 	{
-		username: {
-			type: String,
-			required: true,
-		},
 		email: {
 			type: String,
 			match: emailRegepxp,
@@ -19,6 +15,11 @@ const userSchema = new Schema(
 		password: {
 			type: String,
 			required: [true, "Password is required"],
+		},
+		subscription: {
+			type: String,
+			enum: ["starter", "pro", "business"],
+			default: "starter",
 		},
 		token: {
 			type: String,

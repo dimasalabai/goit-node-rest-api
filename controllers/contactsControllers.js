@@ -22,7 +22,7 @@ export const getAllContacts = async (req, res) => {
 
 		const total = await contactsService.countContacts({ owner });
 
-		res.json({ result, total });
+		res.json({ contacts: result, total });
 	} catch (error) {
 		next(error);
 	}

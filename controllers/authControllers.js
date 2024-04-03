@@ -6,6 +6,7 @@ import * as authServices from "../services/authServices.js";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 
 import HttpError from "../helpers/HttpError.js";
+import { json } from "express";
 
 const { JWT_SECRET } = process.env;
 
@@ -25,13 +26,13 @@ const signup = async (req, res) => {
 	});
 
 	res.status(201).json({
-		username: newUser.username,
-		email: newUser.email,
+		user: { email: newUser.email, subscription: newUser.subscription },
 	});
 };
 
 const signin = async (req, res) => {
 	const { email, password } = req.body;
+
 	const user = await authServices.findUser({ email });
 	if (!user) {
 		throw HttpError(401, "Email or password invalid");
@@ -52,15 +53,19 @@ const signin = async (req, res) => {
 
 	res.json({
 		token,
+		user: {
+			email: email,
+			subscription: user.subscription,
+		},
 	});
 };
 
 const getCurrent = async (req, res) => {
-	const { username, email } = req.user;
+	const { subscription, email } = req.user;
 
 	res.json({
-		username,
 		email,
+		subscription,
 	});
 };
 
@@ -68,9 +73,7 @@ const signout = async (req, res) => {
 	const { _id } = req.user;
 	await authServices.updateUser({ _id }, { token: "" });
 
-	res.json({
-		message: "Signout succsess",
-	});
+	res.status(204).json();
 };
 
 export default {

@@ -105,9 +105,12 @@ export const updateStatus = async (req, res, next) => {
 		}
 
 		const { id } = req.params;
+		const { _id: owner } = req.user;
 
-		const result = await contactsService.updateContactById(id, req.body);
-		console.log(result);
+		const result = await contactsService.updateContactByFilter(
+			{ owner, _id: id },
+			req.body
+		);
 
 		if (!result) {
 			throw HttpError(404, "Not Found");

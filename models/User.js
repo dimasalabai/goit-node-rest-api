@@ -1,8 +1,14 @@
+import gravatar from "gravatar";
+
 import { Schema, model, set } from "mongoose";
 
 import { handleSaveError, setUpdateSettings } from "./hooks.js";
 
 import { emailRegepxp } from "../constants/user-constants.js";
+
+const generateAvatarUrl = function () {
+	return gravatar.url(this.email);
+};
 
 const userSchema = new Schema(
 	{
@@ -20,6 +26,10 @@ const userSchema = new Schema(
 			type: String,
 			enum: ["starter", "pro", "business"],
 			default: "starter",
+		},
+		avatarURL: {
+			type: String,
+			default: generateAvatarUrl,
 		},
 		token: {
 			type: String,

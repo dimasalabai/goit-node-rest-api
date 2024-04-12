@@ -39,3 +39,5 @@ mongoose.connect(DB_HOST)
 		console.error(error.message);
 		process.exit(1);
 	});
+
+export default app;

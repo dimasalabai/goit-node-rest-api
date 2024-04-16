@@ -2,7 +2,11 @@ import express from "express";
 
 import authControllers from "../controllers/authControllers.js";
 
-import { userSignInSchema, userSignUpSchema } from "../schemas/usersSchemas.js";
+import {
+	userSignInSchema,
+	userSignUpSchema,
+	userEmailSchema,
+} from "../schemas/usersSchemas.js";
 
 import validateBody from "../helpers/validateBody.js";
 
@@ -16,6 +20,14 @@ authRouter.post(
 	validateBody(userSignUpSchema),
 	authControllers.signup
 );
+
+authRouter.get("/verify/:verificationToken", authControllers.verify);
+authRouter.post(
+	"/verify",
+	validateBody(userEmailSchema),
+	authControllers.resendVerify
+);
+
 authRouter.post(
 	"/login",
 	validateBody(userSignInSchema),
